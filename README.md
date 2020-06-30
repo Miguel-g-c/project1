@@ -7,3 +7,4 @@ It is a flask application which, once you are registered, allows you to rate boo
 ## References:
 
 Icons: [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
+[Goodreads API](https://www.goodreads.com/api)
