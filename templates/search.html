@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+</li>
+<li class="nav-item active">
+    <a href="{{ url_for('search') }}" class="nav-link">Search</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-5">
+    <div class="row">
+        <div class ="col-lg-6 col-md-6 col-sm-12">
+            <div class="card text-white bg-dark mt-4">
+                <div class="card-body">
+                    <form action="/search" method="post">
+                        <fieldset class="form-group">
+                            <div class="row">
+                            <legend class="col-form-label col-sm-3 pt-0">Search by</legend>
+                                <div class="col-sm-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchingby" id="searchingby1" value="title" checked>
+                                        <label class="form-check-label" for="searchingby1">Title</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchingby" id="searchingby2" value="author">
+                                        <label class="form-check-label" for="searchingby2">Author</label>
+                                    </div>
+                                    <div class="form-check disabled">
+                                        <input class="form-check-input" type="radio" name="searchingby" id="searchingby3" value="year">
+                                        <label class="form-check-label" for="searchingby3">Year</label>
+                                    </div>
+                                    <div class="form-check disabled">
+                                        <input class="form-check-input" type="radio" name="searchingby" id="searchingby4" value="isbn">
+                                        <label class="form-check-label" for="searchingby3">ISBN</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group row">
+                            <label for="InputSearch" class="col-sm-3 col-form-label">Search for</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="InputSearch" name="searchingfor">
+                            </div>
+                        </div>
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class ="col-lg-6 col-md-6 col-sm-12">
+            {% if errors %}
+            <div class="row pt-4">
+                <div class="col">
+                    <div class="alert alert-danger" role="alert">
+                        Not maches found, sorry!
+                    </div>
+                </div>
+            </div>
+            {% elif books %}
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{book[1]}}</td>
+                        <td>{{book[2]}}</td>
+                        <td>{{book[3]}}</td>
+                        <td><a href="{{ url_for('book', isbn=book[4]) }}">{{book[4]}}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('search') }}" class="nav-link">Search</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-5">
+    <div class="row pt-3">
+        <div class ="col-lg-6 col-md-6 col-sm-12">
+            <div class="text">
+                <h1 class='font-weight-bold'>{{book[1]}}</h1>
+                <hr>
+                <h3>By {{book[2]}}</h3>
+                <h4>{{book[3]}}</h4>
+                <h4>ISBN: {{book[4]}}</h4>
+                <hr>
+                <h5>Average rating: {{api['average_rating']}}</h5>
+                <h5>Number of ratings: {{"{:,.0f}".format(api['ratings_count'])}}</h5>
+                <hr>
+            </div>
+        </div>
+        <div class ="col-lg-6 col-md-6 col-sm-12 align-self-center">
+            <div class="card text-white bg-dark mt-2">
+                <div class="card-body">
+                    <form action="{{ url_for('book', isbn=book[4]) }}" method="post">
+                        <fieldset class="form-group">
+                            <div class="row">
+                            <legend class="col-form-label col-sm-3 pt-0">Your mark</legend>
+                                <div class="col-sm-9">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1" checked>
+                                        <label class="form-check-label" for="inlineRadio1">1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+                                        <label class="form-check-label" for="inlineRadio2">2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+                                        <label class="form-check-label" for="inlineRadio3">3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+                                        <label class="form-check-label" for="inlineRadio4">4</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+                                        <label class="form-check-label" for="inlineRadio5">5</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group row">
+                            <label for="InputReview" class="col-sm-3 col-form-label">Comment</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="InputReview" name="review" style="height: 150px;">
+                            </div>
+                        </div>
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class ="col">
+            <h2 class='font-weight-bold'>Reviews</h2>
+            <hr>
+            {% if errors %}
+            <div class="alert alert-danger" role="alert">
+                You have already submitted a review!
+            </div>
+            {% endif %}
+            {% if reviews %}
+            <div class=text>
+                {% for review in reviews %}
+                <h5><b>{{review[0]}}</b> marked this book {{review[2]}}/5 on {{review[3]}}</h5>
+                <p>{{review[1]}}</p>
+                <hr>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>There are no reviews for this book yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block navitems %}
+{% if session['user_id'] %}
+<li class="nav-item active">
+    <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('search') }}" class="nav-link">Search</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+</li>
+{% else %}
+<li class="nav-item active">
+    <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+</li>
+<li class="nav-item">
+    <a href="{{ url_for('register') }}" class="nav-link">Register</a>
+</li>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if session['user_id'] %}
+<div class="container pt-5">
+    <div class="row">
+        <div class ="col">
+            <div class="text-center pt-4">
+                <h1 class="font-weight-bold">Hello {{session['username']}}. Welcome!</h1>
+                <img src="static/home.png" class="img-fluid" alt="mark4book!">
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container pt-5">
+    {% if register %}
+    <div class="row pt-5">
+        <div class="col align-self-center">
+            <div class="alert alert-success" role="alert">
+                Account successfully created! Please, sign in
+            </div>
+        </div>
+    </div>
+    {% elif errors %}
+    <div class="row pt-5">
+        <div class="col align-self-center">
+            <div class="alert alert-danger" role="alert">
+                {{message}}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class ="col-lg-6 col-md-6 col-sm-12">
+            <div class="text-left pt-4">
+                <h1 class="font-weight-bold">Welcome!</h1>
+            </div>
+            <p class="text-justify">Here you can make your own mark book for books! Pick the books you have read, 
+                rate them and share your review. Please, sign in or <a href="{{ url_for('register') }}">register</a> to continue.</p>
+            <img src="static/home.png" class="img-fluid" alt="mark4book!">
+        </div>
+        <div class ="col-lg-6 col-md-6 col-sm-12 align-self-center">
+            <div class="card text-white bg-dark mt-4">
+                <div class="card-body">
+                    <form action="/" method="post">
+                        <div class="form-group">
+                            <label for="inputUsername">Username</label>
+                            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="InputPassword">Password</label>
+                            <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Password">
+                        </div>
+                            <button type="submit" class="btn btn-secondary">Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
